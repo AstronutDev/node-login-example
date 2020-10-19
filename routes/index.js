@@ -1,16 +1,19 @@
 var express = require('express');
 var router = express.Router();
+let passport = require('passport')
 
 const isLoggedIn = (req, res, next) => {
-  if (!req.session.user) {
-    res.redirect('/login')
+  if (req.isAuthenticated()) {
+    next()
+  } else {
+    return res.redirect('/login')
   }
-  next()
 }
+
 
 /* GET home page. */
 router.get('/', isLoggedIn,  function(req, res, next) {
-  res.render('index', { title: 'Express', user: req.session.user });
+  res.render('index', { title: 'Express', user: req.user });
 });
 
 router.get('/register',  (req, res, next) => {
@@ -18,8 +21,12 @@ router.get('/register',  (req, res, next) => {
 })
 
 router.get('/login', (req, res, next) => {
-  res.render('login')
+  res.render('login') 
 })
 
+router.get('/logout', (req, res, next) => {
+  req.logout()
+  res.redirect('/')
+})
 
 module.exports = router;

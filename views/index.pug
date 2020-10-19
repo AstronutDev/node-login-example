@@ -3,4 +3,9 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  p #{user.username}
+  if user
+    p #{user.username}
+    p #{user.name}
+    a(href="/logout" class="btn btn-link") logout
+
+
